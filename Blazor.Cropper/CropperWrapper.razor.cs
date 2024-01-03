@@ -1,9 +1,7 @@
-﻿using System.Text.Json;
-using System.Text.Json.Serialization;
-using Blazor.Cropper.Model;
+﻿using Json_exe.Blazor.Cropper.Model;
 using Microsoft.AspNetCore.Components;
 
-namespace Blazor.Cropper;
+namespace Json_exe.Blazor.Cropper;
 
 public partial class CropperWrapper
 {

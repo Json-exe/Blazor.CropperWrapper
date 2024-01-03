@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Blazor.Cropper.Model;
+namespace Json_exe.Blazor.Cropper.Model;
 
 public class CropperOptions
 {

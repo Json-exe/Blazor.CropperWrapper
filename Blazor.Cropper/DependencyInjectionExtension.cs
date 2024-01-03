@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace Blazor.Cropper;
+namespace Json_exe.Blazor.Cropper;
 
 public static class DependencyInjectionExtension
 {
