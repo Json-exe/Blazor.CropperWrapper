@@ -1,0 +1,23 @@
+﻿@page "/fetchdata"
+
+<PageTitle>Cropper Test-Page</PageTitle>
+
+<h1>Cropper Test-Page</h1>
+
+<p>This component demonstrates how the cropper is working.</p>
+
+<CropperWrapper @ref="CropperWrapperRef" OnReady="OnReady" ImageSrc="sample-data/testImage.jpeg" Alt="Test-Image"/>
+
+<div class="vstack mt-5 gap-3">
+    <button class="btn-primary w-auto">Test!</button>
+</div>
+
+@code
+{
+    private CropperWrapper CropperWrapperRef { get; set; } = null!;
+
+    private void OnReady()
+    {
+        Console.WriteLine("Cropper is ready!");
+    }
+}
