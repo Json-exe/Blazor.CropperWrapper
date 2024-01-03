@@ -140,6 +140,17 @@ The following options are available to use atm. To read more about them consider
   - Type: bool
   - Default: true
 
+## Important
+Because Cropper returns an base64 string of the cropped image, the data can get very large for the SignalR connection.
+To prevent this, you can increase the max size of the SignalR connection in your Startup.cs.
+```CSharp
+services.AddSignalR(options =>
+{
+    options.MaximumReceiveMessageSize =  // 10MB for example 
+});
+```
+
+
 ## Roadmap
 
 - [x] Add Cropper.js
