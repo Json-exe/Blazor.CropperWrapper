@@ -4,7 +4,7 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <PackageId>Json_exe.Blazor.Cropper</PackageId>
-        <Version>0.2.0</Version>
+        <Version>0.2.1</Version>
         <Title>CropperJS Wrapper for Blazor</Title>
         <Authors>Json-exe</Authors>
         <Description>This is a wrapper around the CropperJS library.</Description>

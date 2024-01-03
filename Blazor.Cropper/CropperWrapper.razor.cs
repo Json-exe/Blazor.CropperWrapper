@@ -10,7 +10,15 @@ public partial class CropperWrapper
     /// The image src to crop.
     /// </summary>
     [Parameter, EditorRequired]
-    public string ImageSrc { get; set; } = string.Empty;
+    public string ImageSrc
+    { 
+        get => _imageSrc;
+        set
+        {
+            if (string.IsNullOrEmpty(_imageSrc)) _imageSrc = value;
+        }
+    }
+    private string _imageSrc = string.Empty;
 
     /// <summary>
     /// The alt text for the image.
@@ -52,7 +60,7 @@ public partial class CropperWrapper
     {
         _changeList.Add(ImageSrc);
         var imageData = await CropperJsInterop.GetCroppedCanvas();
-        ImageSrc = imageData;
+        _imageSrc = imageData;
     }
 
     /// <summary>
@@ -192,8 +200,8 @@ public partial class CropperWrapper
     public async Task GoBack()
     {
         if (_changeList.Count <= 0) return;
-        ImageSrc = _changeList[^1];
-        await CropperJsInterop.GoBack(ImageSrc);
+        _imageSrc = _changeList[^1];
+        await CropperJsInterop.Replace(ImageSrc);
         _changeList.RemoveAt(_changeList.Count - 1);
     }
 }

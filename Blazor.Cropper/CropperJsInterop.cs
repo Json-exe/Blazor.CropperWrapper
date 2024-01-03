@@ -89,7 +89,7 @@ public class CropperJsInterop : IAsyncDisposable
     public async ValueTask Replace(string data)
     {
         var module = await _moduleTask.Value;
-        await module.InvokeVoidAsync("replace", _cropModule, data);
+        await module.InvokeVoidAsync("replace", data, _cropModule);
     }
 
     public async ValueTask Enable()
@@ -114,12 +114,6 @@ public class CropperJsInterop : IAsyncDisposable
     {
         var module = await _moduleTask.Value;
         await module.InvokeVoidAsync("rotateTo", degrees, _cropModule);
-    }
-
-    public async ValueTask GoBack(string data)
-    {
-        var module = await _moduleTask.Value;
-        await module.InvokeVoidAsync("replace", _cropModule, data);
     }
 
     public async ValueTask DisposeAsync()
