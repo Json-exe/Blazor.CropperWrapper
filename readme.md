@@ -11,6 +11,8 @@ Enhance your .NET Blazor applications with seamless image cropping functionality
 - [Usage](#usage)
   - [Interactive Methods](#interactive-methods)
   - [Options](#options)
+  - [Events](#events)
+- [Important](#important)
 - [Roadmap](#roadmap)
 - [Built With](#built-with)
 - [Authors](#authors)
@@ -156,6 +158,13 @@ The following options are available to use atm. To read more about them consider
 - **ToggleDragModeOnDblclick**:
   - Type: bool
   - Default: true
+
+### Events
+---
+The following events are available to use atm. To read more about them consider using the official [Cropper.js documentation](https://github.com/fengyuanchen/cropperjs/blob/main/README.md#events)
+
+- **Ready**:
+  - This event fires when the target image has been loaded and the cropper instance is ready for operating.
 
 ## Important
 Because Cropper returns an base64 string of the cropped image, the data can get very large for the SignalR connection.
