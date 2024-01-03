@@ -18,7 +18,7 @@ public class CropperOptions
     [JsonNumberHandling(JsonNumberHandling.AllowNamedFloatingPointLiterals)]
     public double? AspectRatio { get; set; } = double.NaN;
 
-    [JsonPropertyName("preview")] public string Preview { get; set; } = string.Empty;
+    // [JsonPropertyName("preview")] public string Preview { get; set; } = string.Empty;
     [JsonPropertyName("responsive")] public bool Responsive { get; set; } = true;
     [JsonPropertyName("restore")] public bool Restore { get; set; } = true;
     [JsonPropertyName("checkCrossOrigin")] public bool CheckCrossOrigin { get; set; } = true;

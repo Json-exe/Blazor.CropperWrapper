@@ -12,7 +12,7 @@
         <Copyright>Json-exe 2024</Copyright>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <PackageProjectUrl>https://github.com/Json-exe/Blazor.CropperWrapper</PackageProjectUrl>
-        <PackageLicenseUrl>https://github.com/Json-exe/Blazor.CropperWrapper#MIT-1-ov-file</PackageLicenseUrl>
+        <PackageLicenseUrl></PackageLicenseUrl>
         <RepositoryUrl>https://github.com/Json-exe/Blazor.CropperWrapper</RepositoryUrl>
         <RepositoryType>Git</RepositoryType>
         <AssemblyName>Json_exe.Blazor.Cropper</AssemblyName>

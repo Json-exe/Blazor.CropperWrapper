@@ -8,7 +8,7 @@ public partial class CropperWrapper
     /// <summary>
     /// The image src to crop.
     /// </summary>
-    [Parameter] public string ImageSrc { get; set; } = string.Empty;
+    [Parameter, EditorRequired] public string ImageSrc { get; set; } = string.Empty;
     
     /// <summary>
     /// The alt text for the image.
