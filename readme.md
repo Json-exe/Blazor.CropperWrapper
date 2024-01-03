@@ -66,6 +66,23 @@ The following methods are available to use atm.
   - y: The amount of pixels you want to move the image on the y axis
 - **GoBack()**:
   - Goes back to the previous state of the image inside the changes list.
+- **Reset()**: 
+  - Resets the image to the original state.
+- **Clear()**:
+  - Clears the image inside the Canvas.
+- **Replace(string imageSrc)**:
+  - Replaces the image inside the Canvas with the given imageSrc.
+  - imageSrc: The Base64 string of the image you want to replace the current image with.
+- **Enable()**: 
+  - Enables the Cropper.
+- **Disable()**: 
+  - Disables the Cropper.
+- **Zoom(double ratio)**:
+  - Zooms the image inside the Canvas.
+  - ratio: The amount of zoom you want to apply to the image.
+- **RotateTo(int degree)**:
+  - Rotates the image to the given degree.
+  - degree: The degree you want to rotate the image to.
 
 ### Options
 ---

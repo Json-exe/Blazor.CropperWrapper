@@ -9,7 +9,12 @@
 <CropperWrapper @ref="CropperWrapperRef" OnReady="OnReady" ImageSrc="sample-data/testImage.jpeg" Alt="Test-Image"/>
 
 <div class="vstack mt-5 gap-3">
-    <button class="btn-primary w-auto">Test!</button>
+    <button class="btn-primary w-auto mt-3" @onclick="@(() => CropperWrapperRef.Reset())">Reset</button>
+    <button class="btn-primary w-auto mt-3" @onclick="@(() => CropperWrapperRef.Clear())">Clear</button>
+    <button class="btn-primary w-auto mt-3" @onclick="@(() => CropperWrapperRef.Enable())">Enable</button>
+    <button class="btn-primary w-auto mt-3" @onclick="@(() => CropperWrapperRef.Disable())">Disable</button>
+    <button class="btn-primary w-auto mt-3" @onclick="@(() => CropperWrapperRef.Zoom(0.1))">Zoom</button>
+    <button class="btn-primary w-auto mt-3" @onclick="@(() => CropperWrapperRef.RotateTo(90))">RotateTo</button>
 </div>
 
 @code
