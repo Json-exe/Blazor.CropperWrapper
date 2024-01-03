@@ -11,6 +11,10 @@
         <Description>This is a wrapper around the CropperJS library.</Description>
         <Copyright>Json-exe 2024</Copyright>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <PackageProjectUrl>https://github.com/Json-exe/Blazor.CropperWrapper</PackageProjectUrl>
+        <PackageLicenseUrl>https://github.com/Json-exe/Blazor.CropperWrapper#MIT-1-ov-file</PackageLicenseUrl>
+        <RepositoryUrl>https://github.com/Json-exe/Blazor.CropperWrapper</RepositoryUrl>
+        <RepositoryType>Git</RepositoryType>
     </PropertyGroup>
 
 
