@@ -1,40 +1,43 @@
 <Project Sdk="Microsoft.NET.Sdk.Razor">
 
     <PropertyGroup>
-        <TargetFramework>net7.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <PackageId>Json_exe.Blazor.Cropper</PackageId>
-        <Version>0.1.1</Version>
+        <Version>0.2.0</Version>
         <Title>CropperJS Wrapper for Blazor</Title>
         <Authors>Json-exe</Authors>
         <Description>This is a wrapper around the CropperJS library.</Description>
         <Copyright>Json-exe 2024</Copyright>
+        <PackageLicenseFile>LICENSE</PackageLicenseFile>
+        <PackageReadmeFile>readme.md</PackageReadmeFile>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <PackageProjectUrl>https://github.com/Json-exe/Blazor.CropperWrapper</PackageProjectUrl>
-        <PackageLicenseUrl></PackageLicenseUrl>
         <RepositoryUrl>https://github.com/Json-exe/Blazor.CropperWrapper</RepositoryUrl>
         <RepositoryType>Git</RepositoryType>
         <AssemblyName>Json_exe.Blazor.Cropper</AssemblyName>
         <RootNamespace>Json_exe.Blazor.Cropper</RootNamespace>
+        <TargetFrameworks>net7.0</TargetFrameworks>
     </PropertyGroup>
 
 
     <ItemGroup>
         <SupportedPlatform Include="browser"/>
     </ItemGroup>
-
+    
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="7.0.14"/>
     </ItemGroup>
 
     <ItemGroup>
-      <Content Update="wwwroot\vendors\cropper.js">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
-      <Content Update="wwwroot\cropperWrapper.js">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
+        <Content Update="wwwroot\vendors\cropper.js">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+        <Content Update="wwwroot\cropperWrapper.js">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+        <None Include="../readme.md" Pack="true" PackagePath="\"/>
+        <None Include="../LICENSE" Pack="true" PackagePath="\"/>
     </ItemGroup>
 
 </Project>

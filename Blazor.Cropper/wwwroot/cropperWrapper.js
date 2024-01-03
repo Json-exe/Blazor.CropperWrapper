@@ -1,8 +1,12 @@
 ﻿import './vendors/cropper.js'
 
-export function initializeCropper(element, options) {
+export function initializeCropper(element, options, dotnetObjectReference) {
     loadStyles();
-    return new Cropper(element, options);
+    const cropper = new Cropper(element, options);
+    element.addEventListener('ready', async () => {
+        await dotnetObjectReference.invokeMethodAsync('ReadyEvent');
+    });
+    return cropper;
 }
 
 export function rotateLeft(value, cropperReference) {
@@ -11,6 +15,18 @@ export function rotateLeft(value, cropperReference) {
 
 export function rotateRight(value, cropperReference) {
     cropperReference.rotate(value);
+}
+
+export function rotateTo(value, cropperReference) {
+    cropperReference.rotateTo(value);
+}
+
+export function reset(cropperReference) {
+    cropperReference.reset();
+}
+
+export function clear(cropperReference) {
+    cropperReference.clear();
 }
 
 export function move(valueX, valueY, cropperReference) {
@@ -40,8 +56,20 @@ export function getCroppedCanvas(cropperReference) {
     return canvas.toDataURL("image/jpeg");
 }
 
-export function replace(cropperReference, data) {
+export function replace(data, cropperReference) {
     cropperReference.replace(data);
+}
+
+export function enable(cropperReference) {
+    cropperReference.enable();
+}
+
+export function disable(cropperReference) {
+    cropperReference.disable();
+}
+
+export function zoom(value, cropperReference) {
+    cropperReference.zoom(value);
 }
 
 function loadStyles() {
