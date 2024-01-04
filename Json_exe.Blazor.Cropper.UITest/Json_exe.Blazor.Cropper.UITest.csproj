@@ -15,10 +15,4 @@
       <ProjectReference Include="..\Blazor.Cropper\Blazor.Cropper.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Content Update="wwwroot\sample-data\testImage.jpeg">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
-    </ItemGroup>
-
 </Project>

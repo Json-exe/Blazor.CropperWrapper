@@ -1,0 +1,74 @@
+﻿@page "/fetchdata"
+@using Json_exe.Blazor.Cropper.Model
+
+<PageTitle>Cropper Test-Page</PageTitle>
+
+<h1>Cropper Test-Page</h1>
+
+<p>This component demonstrates how the cropper is working.</p>
+
+<p>Showcased images come from <a href="https://pixabay.com/">https://pixabay.com/</a></p>
+
+<CropperWrapper @ref="CropperWrapperRef" OnReady="OnReady" OnZoom="OnZoom" OnCrop="OnCrop"
+                ImageSrc="@_imageSrc" Alt="Test-Image"/>
+
+<div class="hstack my-3 gap-3 flex-wrap justify-content-center align-items-center">
+    <button class="btn-primary w-25 mt-2" @onclick="@(() => CropperWrapperRef.RotateLeft())">Rotate Left</button>
+    <button class="btn-primary w-25 mt-2" @onclick="@(() => CropperWrapperRef.RotateRight())">Rotate Right</button>
+    <button class="btn-primary w-25 mt-2" @onclick="@(() => CropperWrapperRef.ScaleHorizontal())">Flip Horizontal</button>
+    <button class="btn-primary w-25 mt-2" @onclick="@(() => CropperWrapperRef.ScaleVertical())">Flip Vertical</button>
+    <button class="btn-primary w-25 mt-2" @onclick="@(GoBack)">Go back</button>
+    <button class="btn-primary w-25 mt-2" @onclick="@(Crop)">Crop</button>
+    <button class="btn-primary w-25 mt-2" @onclick="@(() => CropperWrapperRef.Reset())">Reset</button>
+    <button class="btn-primary w-25 mt-2" @onclick="@(() => CropperWrapperRef.Clear())">Clear</button>
+    <button class="btn-primary w-25 mt-2" @onclick="@(() => CropperWrapperRef.Enable())">Enable</button>
+    <button class="btn-primary w-25 mt-2" @onclick="@(() => CropperWrapperRef.Disable())">Disable</button>
+    <button class="btn-primary w-25 mt-2" @onclick="@(() => CropperWrapperRef.Zoom(0.1))">Zoom</button>
+    <button class="btn-primary w-25 mt-2" @onclick="@(() => CropperWrapperRef.RotateTo(90))">RotateTo</button>
+    <button class="btn-primary w-25 mt-2" @onclick="@(GetData)">Get data</button>
+</div>
+
+@code
+{
+    private CropperWrapper CropperWrapperRef { get; set; } = null!;
+    private readonly List<string> _changes = new();
+    private string _imageSrc = "./sample-data/testImage.jpg";
+
+    private void OnReady()
+    {
+        Console.WriteLine("Cropper is ready!");
+    }
+
+    private async Task Crop()
+    {
+        _changes.Add(_imageSrc);
+        var data = await CropperWrapperRef.GetCroppedArea();
+        _imageSrc = data;
+    }
+
+    private async Task GetData()
+    {
+        var data = await CropperWrapperRef.GetData(true);
+        Console.WriteLine(data);
+    }
+    
+    private async Task GoBack()
+    {
+        if (_changes.Count > 0)
+        {
+            _imageSrc = _changes.Last();
+            await CropperWrapperRef.Replace(_imageSrc);
+            _changes.RemoveAt(_changes.Count - 1);
+        }
+    }
+
+    private void OnZoom(ZoomEvent obj)
+    {
+        Console.WriteLine("Zoom event fired!");
+    }
+
+    private void OnCrop(CropEvent obj)
+    {
+        Console.WriteLine("Crop event fired!");
+    }
+}
