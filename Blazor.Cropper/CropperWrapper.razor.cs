@@ -10,15 +10,7 @@ public partial class CropperWrapper
     /// The image src to crop.
     /// </summary>
     [Parameter, EditorRequired]
-    public string ImageSrc
-    { 
-        get => _imageSrc;
-        set
-        {
-            if (string.IsNullOrEmpty(_imageSrc)) _imageSrc = value;
-        }
-    }
-    private string _imageSrc = string.Empty;
+    public string ImageSrc { get; set; } = string.Empty;
 
     /// <summary>
     /// The alt text for the image.
@@ -38,9 +30,17 @@ public partial class CropperWrapper
     /// </summary>
     [Parameter]
     public EventCallback OnReady { get; set; }
-
-    private readonly List<string> _changeList = new();
-
+    /// <summary>
+    /// This event fires when a cropper instance starts to zoom in or zoom out its canvas (image wrapper).
+    /// </summary>
+    [Parameter]
+    public EventCallback<ZoomEvent> OnZoom { get; set; }
+    /// <summary>
+    /// This event fires when the canvas (image wrapper) or the crop box changes.
+    /// </summary>
+    [Parameter]
+    public EventCallback<CropEvent> OnCrop { get; set; }
+    
     private ElementReference ElementRef { get; set; }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -53,14 +53,18 @@ public partial class CropperWrapper
     }
 
     /// <summary>
-    /// Crops the image and sets the ImageSrc to the cropped image.
-    /// The image is saved in the changeList, so you can go back to the last image.
+    /// Returns the cropped area of the image as a base64 string.
     /// </summary>
-    public async Task GetCroppedArea()
+    /// <param name="options">
+    /// The options for the cropped area. (Optional)
+    /// </param>
+    /// <returns>
+    /// The cropped image as a base64 string.
+    /// </returns>
+    public async Task<string> GetCroppedArea(CropCanvasOptions? options = null)
     {
-        _changeList.Add(ImageSrc);
-        var imageData = await CropperJsInterop.GetCroppedCanvas();
-        _imageSrc = imageData;
+        var imageData = await CropperJsInterop.GetCroppedCanvas(options);
+        return imageData;
     }
 
     /// <summary>
@@ -193,15 +197,27 @@ public partial class CropperWrapper
     {
         await CropperJsInterop.RotateTo(degree);
     }
-
+    
+    /// <summary>
+    /// Output the final cropped area position and size data (based on the natural size of the original image).
+    /// </summary>
+    /// <param name="rounded">
+    /// Set to true to get rounded values.
+    /// </param>
+    /// <returns>
+    /// A CropData object containing the position and size data.
+    /// </returns>
+    public async Task<CropData> GetData(bool rounded = false)
+    {
+        return await CropperJsInterop.GetData(rounded);
+    }
+    
     /// <summary>
     /// Goes back to the last image.
     /// </summary>
+    [Obsolete("Method is deprecated and will be removed in a future version. Implement your own undo logic instead.", true)]
     public async Task GoBack()
     {
-        if (_changeList.Count <= 0) return;
-        _imageSrc = _changeList[^1];
         await CropperJsInterop.Replace(ImageSrc);
-        _changeList.RemoveAt(_changeList.Count - 1);
     }
 }

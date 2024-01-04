@@ -7,7 +7,9 @@ Enhance your .NET Blazor applications with seamless image cropping functionality
 - [Introduction](#introduction)
 - [Getting Started](#getting-started)
 - [Preview](#preview)
-- [Example in a MudBlazor Application](#example-in-a-mudblazor-application)
+- [Examples](#examples)
+  - [MudBlazor Application](#mudblazor-application)
+  - [How to add a GoBack function](#how-to-add-a-goback-function)
 - [Usage](#usage)
   - [Interactive Methods](#interactive-methods)
   - [Options](#options)
@@ -36,7 +38,8 @@ To start using Json_exe.Blazor.CropperWrapper:
 
 ![chrome_TuCntoczjB](https://github.com/Json-exe/Blazor.CropperWrapper/assets/96955704/ed1b7f16-b346-4b35-b2d2-dd82fb220868)
 
-## Example in a MudBlazor Application
+## Examples 
+### MudBlazor Application
 ```CSharp
 <CropperWrapper Options="new CropperOptions { AspectRatio = 1, ViewMode = 1 }" ImageSrc="@ImageData" @ref="@CropperRef" Alt="Example-Alt"/>
 <MudDivider FlexItem Class="my-2"/>
@@ -45,6 +48,35 @@ To start using Json_exe.Blazor.CropperWrapper:
 </MudStack>
 ```
 In this example the Button calls the Method CropperRef.GetCroppedArea() which crops the image inside the Cropper Canva and replaces it witht the cropped version.
+
+### How to add a GoBack function
+```CSharp
+<CropperWrapper @ref="@CropperWrapperRef" ImageSrc="@_imageSrc"/>
+
+@code 
+{
+  private readonly List<string> _changes = new();
+  private CropperWrapper CropperWrapperRef { get; set; } = null!;
+  private string _imageSrc = "<Your-Image-Src>";
+
+  private async Task GoBack()
+  {
+    if (_changes.Count > 0)
+    {
+        _imageSrc = _changes.Last();
+        await CropperWrapperRef.Replace(_imageSrc);
+        _changes.RemoveAt(_changes.Count - 1);
+    }
+  }
+
+  private async Task Crop()
+  {
+    _changes.Add(_imageSrc);
+    var data = await CropperWrapperRef.GetCroppedArea();
+    _imageSrc = data;
+  }
+}
+```
 
 ## Usage
 
@@ -68,8 +100,6 @@ The following methods are available to use atm.
   - Moves the image inside the Canvas
   - x: The amount of pixels you want to move the image on the x axis
   - y: The amount of pixels you want to move the image on the y axis
-- **GoBack()**:
-  - Goes back to the previous state of the image inside the changes list.
 - **Reset()**: 
   - Resets the image to the original state.
 - **Clear()**:
@@ -87,6 +117,9 @@ The following methods are available to use atm.
 - **RotateTo(int degree)**:
   - Rotates the image to the given degree.
   - degree: The degree you want to rotate the image to.
+- **GetData(bool rounded = false)**:
+  - Returns the data of the Cropper.
+  - rounded (optional): If true, the data will be rounded.
 
 ### Options
 ---
@@ -167,6 +200,10 @@ The following events are available to use atm. To read more about them consider 
 
 - **Ready**:
   - This event fires when the target image has been loaded and the cropper instance is ready for operating.
+- **OnZoom**:
+  - This event fires when the cropper instance starts to zoom in or zoom out its canvas (image wrapper).
+- **OnCrop**:
+  - This event fires when the canvas (image wrapper) or the crop box changes.
 
 ## Important
 Because Cropper returns an base64 string of the cropped image, the data can get very large for the SignalR connection.
@@ -177,7 +214,6 @@ services.AddSignalR(options =>
     options.MaximumReceiveMessageSize =  // 10MB for example 
 });
 ```
-
 
 ## Roadmap
 

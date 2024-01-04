@@ -1,3 +1,4 @@
+using Json_exe.Blazor.Cropper.Model;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
@@ -15,7 +16,7 @@ public class CropperJsInterop : IAsyncDisposable
     private readonly Lazy<Task<IJSObjectReference>> _moduleTask;
     private IJSObjectReference _cropModule = null!;
     private DotNetObjectReference<CropperJsInterop>? _dotNetObjectReference;
-    private CropperWrapper? _cropperWrapper;
+    private CropperWrapper _cropperWrapper = null!;
 
     public CropperJsInterop(IJSRuntime jsRuntime)
     {
@@ -34,12 +35,18 @@ public class CropperJsInterop : IAsyncDisposable
     }
     
     [JSInvokable]
-    public async Task ReadyEvent() => await _cropperWrapper!.OnReady.InvokeAsync();
+    public async Task ReadyEvent() => await _cropperWrapper.OnReady.InvokeAsync();
+    
+    [JSInvokable]
+    public async Task ZoomEvent(ZoomEvent zoomEvent) => await _cropperWrapper.OnZoom.InvokeAsync(zoomEvent);
 
-    public async ValueTask<string> GetCroppedCanvas()
+    [JSInvokable]
+    public async Task CropEvent(CropEvent cropEvent) => await _cropperWrapper.OnCrop.InvokeAsync(cropEvent);
+    
+    public async ValueTask<string> GetCroppedCanvas(CropCanvasOptions? options)
     {
         var module = await _moduleTask.Value;
-        var imageData = await module.InvokeAsync<string>("getCroppedCanvas", _cropModule);
+        var imageData = await module.InvokeAsync<string>("getCroppedCanvas", options ?? new CropCanvasOptions(), _cropModule);
         return imageData;
     }
 
@@ -116,6 +123,13 @@ public class CropperJsInterop : IAsyncDisposable
         await module.InvokeVoidAsync("rotateTo", degrees, _cropModule);
     }
 
+    public async ValueTask<CropData> GetData(bool rounded = false)
+    {
+        var module = await _moduleTask.Value;
+        var data = await module.InvokeAsync<CropData>("getData", rounded, _cropModule);
+        return data;
+    }
+    
     public async ValueTask DisposeAsync()
     {
         if (_moduleTask.IsValueCreated)

@@ -6,6 +6,12 @@ export function initializeCropper(element, options, dotnetObjectReference) {
     element.addEventListener('ready', async () => {
         await dotnetObjectReference.invokeMethodAsync('ReadyEvent');
     });
+    element.addEventListener('zoom', async (event) => {
+        await dotnetObjectReference.invokeMethodAsync('ZoomEvent', event.detail);
+    });
+    element.addEventListener('crop', async (event) => {
+        await dotnetObjectReference.invokeMethodAsync('CropEvent', event.detail);
+    });
     return cropper;
 }
 
@@ -49,8 +55,10 @@ export function scaleHorizontally(cropperReference) {
     }
 }
 
-export function getCroppedCanvas(cropperReference) {
-    const canvas = cropperReference.getCroppedCanvas({maxWidth: 4096, maxHeight: 4096});
+export function getCroppedCanvas(options, cropperReference) {
+    console.log(options);
+    const canvas = cropperReference.getCroppedCanvas(options);
+    cropperReference.getCroppedCanvas({ fillColor: '' })
     const data = canvas.toDataURL("image/jpeg");
     cropperReference.replace(data);
     return canvas.toDataURL("image/jpeg");
@@ -70,6 +78,10 @@ export function disable(cropperReference) {
 
 export function zoom(value, cropperReference) {
     cropperReference.zoom(value);
+}
+
+export function getData(rounded = false, cropperReference) {
+    return cropperReference.getData(rounded);
 }
 
 function loadStyles() {
