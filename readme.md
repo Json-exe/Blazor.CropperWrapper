@@ -34,6 +34,8 @@ To start using Json_exe.Blazor.CropperWrapper:
 
 ## Preview
 
+![chrome_TuCntoczjB](https://github.com/Json-exe/Blazor.CropperWrapper/assets/96955704/ed1b7f16-b346-4b35-b2d2-dd82fb220868)
+
 ## Example in a MudBlazor Application
 ```CSharp
 <CropperWrapper Options="new CropperOptions { AspectRatio = 1, ViewMode = 1 }" ImageSrc="@ImageData" @ref="@CropperRef" Alt="Example-Alt"/>
