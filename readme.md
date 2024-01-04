@@ -29,7 +29,7 @@ To start using Json_exe.Blazor.CropperWrapper:
 2. Include `@using Json_exe.Blazor.Cropper` in your `_Imports.razor`.
 3. Add `builder.Services.AddCropper()` in your `Program.cs` or `Startup.cs`.
 4. Use `<CropperWrapper @ref="@CropperRef" ImageSrc="<Your-Image-Src>"/>` in any page.
-5. Create your UI with buttons and other controls to interact with the Cropper methods.
+5. Create your user interface with buttons and other controls to interact with the cropper methods enabled by the Ref. ``CropperRef.Method()``
 6. Refer to [Usage and Features](#usage-and-features) for detailed information on methods and options.
 
 ## Preview
@@ -39,10 +39,10 @@ To start using Json_exe.Blazor.CropperWrapper:
 <CropperWrapper Options="new CropperOptions { AspectRatio = 1, ViewMode = 1 }" ImageSrc="@ImageData" @ref="@CropperRef" Alt="Example-Alt"/>
 <MudDivider FlexItem Class="my-2"/>
 <MudStack Row Spacing="5">
-    <MudButton Variant="Variant.Filled" OnClick="@(() => GetCroppedArea())">Crop!</MudButton>
+    <MudButton Variant="Variant.Filled" OnClick="@(() => CropperRef.GetCroppedArea())">Crop!</MudButton>
 </MudStack>
 ```
-In this example the Button calls the Method GetCroppedArea() which crops the image inside the Cropper Canva and replaces it witht the cropped version.
+In this example the Button calls the Method CropperRef.GetCroppedArea() which crops the image inside the Cropper Canva and replaces it witht the cropped version.
 
 ## Usage
 
