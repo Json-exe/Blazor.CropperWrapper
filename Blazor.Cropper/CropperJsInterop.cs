@@ -43,10 +43,10 @@ public class CropperJsInterop : IAsyncDisposable
     [JSInvokable]
     public async Task CropEvent(CropEvent cropEvent) => await _cropperWrapper.OnCrop.InvokeAsync(cropEvent);
     
-    public async ValueTask<string> GetCroppedCanvas(CropCanvasOptions? options)
+    public async ValueTask<string> GetCroppedCanvas(CropCanvasOptions options)
     {
         var module = await _moduleTask.Value;
-        var imageData = await module.InvokeAsync<string>("getCroppedCanvas", options ?? new CropCanvasOptions(), _cropModule);
+        var imageData = await module.InvokeAsync<string>("getCroppedCanvas", options, _cropModule);
         return imageData;
     }
 

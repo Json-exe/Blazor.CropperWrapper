@@ -53,7 +53,7 @@ public partial class CropperWrapper
     }
 
     /// <summary>
-    /// Returns the cropped area of the image as a base64 string.
+    /// Returns the cropped area of the image as a base64 string with the given options.
     /// </summary>
     /// <param name="options">
     /// The options for the cropped area. (Optional)
@@ -61,9 +61,21 @@ public partial class CropperWrapper
     /// <returns>
     /// The cropped image as a base64 string.
     /// </returns>
-    public async Task<string> GetCroppedArea(CropCanvasOptions? options = null)
+    public async Task<string> GetCroppedArea(CropCanvasOptions options)
     {
         var imageData = await CropperJsInterop.GetCroppedCanvas(options);
+        return imageData;
+    }
+    
+    /// <summary>
+    /// Returns the cropped area of the image as a base64 string with default options.
+    /// </summary>
+    /// <returns>
+    /// The cropped image as a base64 string.
+    /// </returns>
+    public async Task<string> GetCroppedArea()
+    {
+        var imageData = await CropperJsInterop.GetCroppedCanvas(new CropCanvasOptions());
         return imageData;
     }
 
@@ -220,4 +232,5 @@ public partial class CropperWrapper
     {
         await CropperJsInterop.Replace(ImageSrc);
     }
+
 }
