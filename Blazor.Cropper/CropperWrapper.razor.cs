@@ -56,7 +56,7 @@ public partial class CropperWrapper
     /// Returns the cropped area of the image as a base64 string with the given options.
     /// </summary>
     /// <param name="options">
-    /// The options for the cropped area. (Optional)
+    /// The options for the cropped area.
     /// </param>
     /// <returns>
     /// The cropped image as a base64 string.

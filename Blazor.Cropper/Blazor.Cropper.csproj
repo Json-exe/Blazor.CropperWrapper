@@ -17,7 +17,7 @@
         <RepositoryType>Git</RepositoryType>
         <AssemblyName>Json_exe.Blazor.Cropper</AssemblyName>
         <RootNamespace>Json_exe.Blazor.Cropper</RootNamespace>
-        <TargetFrameworks>net7.0</TargetFrameworks>
+        <TargetFrameworks>net7.0;net8.0</TargetFrameworks>
         <PackageIcon>Json_exe.Blazor.Cropper-Logo.png</PackageIcon>
     </PropertyGroup>
 
@@ -39,10 +39,7 @@
         </Content>
         <None Include="../readme.md" Pack="true" PackagePath="\"/>
         <None Include="../LICENSE" Pack="true" PackagePath="\"/>
-        <None Update="Json_exe.Blazor.Cropper-Logo.png">
-          <Pack>True</Pack>
-          <PackagePath></PackagePath>
-        </None>
+        <None Include="../Json_exe.Blazor.Cropper-Logo.png" PackagePath="\" Pack="true"/>
     </ItemGroup>
 
 </Project>
