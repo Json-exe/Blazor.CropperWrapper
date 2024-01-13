@@ -18,7 +18,7 @@ public class CropperOptions
     [JsonNumberHandling(JsonNumberHandling.AllowNamedFloatingPointLiterals)]
     public double? AspectRatio { get; set; } = double.NaN;
 
-    // [JsonPropertyName("preview")] public string Preview { get; set; } = string.Empty;
+    [JsonPropertyName("preview")] public string Preview { get; set; } = string.Empty;
     [JsonPropertyName("responsive")] public bool Responsive { get; set; } = true;
     [JsonPropertyName("restore")] public bool Restore { get; set; } = true;
     [JsonPropertyName("checkCrossOrigin")] public bool CheckCrossOrigin { get; set; } = true;
@@ -37,14 +37,22 @@ public class CropperOptions
     [JsonPropertyName("zoomOnTouch")] public bool ZoomOnTouch { get; set; } = true;
     [JsonPropertyName("zoomOnWheel")] public bool ZoomOnWheel { get; set; } = true;
     [JsonPropertyName("wheelZoomRatio")] public double WheelZoomRatio { get; set; } = 0.1;
+    [JsonPropertyName("cropBoxMovable")] public bool CropBoxMovable { get; set; } = true;
+    [JsonPropertyName("cropBoxResizable")] public bool CropBoxResizable { get; set; } = true;
 
     [JsonPropertyName("toggleDragModeOnDblclick")]
     public bool ToggleDragModeOnDblclick { get; set; } = true;
+    [JsonPropertyName("minContainerWidth")] public double MinContainerWidth { get; set; } = 200;
+    [JsonPropertyName("minContainerHeight")] public double MinContainerHeight { get; set; } = 100;
+    [JsonPropertyName("minCanvasWidth")] public double MinCanvasWidth { get; set; } = 0;
+    [JsonPropertyName("minCanvasHeight")] public double MinCanvasHeight { get; set; } = 0;
+    [JsonPropertyName("minCropBoxWidth")] public double MinCropBoxWidth { get; set; } = 0;
+    [JsonPropertyName("minCropBoxHeight")] public double MinCropBoxHeight { get; set; } = 0;
 }
 
 public enum DragMode
 {
-    crop, 
+    crop,
     move,
     none
 }

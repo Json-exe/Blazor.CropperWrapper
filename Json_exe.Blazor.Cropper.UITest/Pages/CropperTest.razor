@@ -9,8 +9,14 @@
 
 <p>Showcased images come from <a href="https://pixabay.com/">https://pixabay.com/</a></p>
 
+<div class="vstack my-3">
+    <label>Here are some preview containers!</label>
+    <div style="width: 250px; height: 150px; float: left; overflow: hidden; margin-right: 0.5rem; margin-bottom: 0.5rem;" 
+         class="img-preview"></div>
+</div>
+
 <CropperWrapper @ref="@CropperWrapperRef" OnReady="OnReady" OnZoom="OnZoom" OnCrop="OnCrop"
-                ImageSrc="@_imageSrc" Alt="Test-Image"/>
+                ImageSrc="@_imageSrc" Alt="Test-Image" Options="Options"/>
 
 <div class="hstack my-3 gap-3 flex-wrap justify-content-center align-items-center">
     <button class="btn-primary w-25 mt-2" @onclick="@(() => CropperWrapperRef.RotateLeft())">Rotate Left</button>
@@ -31,6 +37,12 @@
 @code
 {
     private CropperWrapper CropperWrapperRef { get; set; } = null!;
+
+    private CropperOptions Options { get; set; } = new()
+    {
+        Preview = ".img-preview"
+    };
+
     private readonly List<string> _changes = new();
     private string _imageSrc = "./sample-data/testImage.jpg";
 

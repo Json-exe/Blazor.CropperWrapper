@@ -223,14 +223,4 @@ public partial class CropperWrapper
     {
         return await CropperJsInterop.GetData(rounded);
     }
-    
-    /// <summary>
-    /// Goes back to the last image.
-    /// </summary>
-    [Obsolete("Method is deprecated and will be removed in a future version. Implement your own undo logic instead.", true)]
-    public async Task GoBack()
-    {
-        await CropperJsInterop.Replace(ImageSrc);
-    }
-
 }

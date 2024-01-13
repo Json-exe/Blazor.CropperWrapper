@@ -2,7 +2,6 @@
 
 export function initializeCropper(element, options, dotnetObjectReference) {
     loadStyles();
-    const cropper = new Cropper(element, options);
     element.addEventListener('ready', async () => {
         await dotnetObjectReference.invokeMethodAsync('ReadyEvent');
     });
@@ -12,7 +11,7 @@ export function initializeCropper(element, options, dotnetObjectReference) {
     element.addEventListener('crop', async (event) => {
         await dotnetObjectReference.invokeMethodAsync('CropEvent', event.detail);
     });
-    return cropper;
+    return new Cropper(element, options);
 }
 
 export function rotateLeft(value, cropperReference) {
