@@ -136,6 +136,9 @@ The following options are available to use atm. To read more about them consider
 - **AspectRatio**:
   - Type: double
   - Default: double.NaN
+- **Preview**:
+  - Type: string
+  - Default: ""
 - **Responsive**:
   - Type: bool
   - Default: true
@@ -190,9 +193,33 @@ The following options are available to use atm. To read more about them consider
 - **WheelZoomRatio**:
   - Type: double
   - Default: 0.1
+- **CropBoxMovable**:
+  - Type: bool
+  - Default: true
+- **CropBoxResizable**:
+  - Type: bool
+  - Default: true
 - **ToggleDragModeOnDblclick**:
   - Type: bool
   - Default: true
+- **MinContainerWidth**:
+  - Type: double
+  - Default: 200
+- **MinContainerHeight**:
+  - Type: double
+  - Default: 100
+- **MinCanvasWidth**:
+  - Type: double
+  - Default: 0
+- **MinCanvasHeight**:
+  - Type: double
+  - Default: 0
+- **MinCropBoxWidth**:
+  - Type: double
+  - Default: 0
+- **MinCropBoxHeight**:
+  - Type: double
+  - Default: 0
 
 ### Events
 ---
@@ -219,10 +246,10 @@ services.AddSignalR(options =>
 
 - [x] Add Cropper.js
 - [ ] Add more Methods
-- [ ] Add last Options
-  - [ ] Preview
-  - [ ] CropBox and Canvas height, width
-- [ ] Add Events
+- [X] Add last Options
+  - [X] Preview
+  - [X] CropBox and Canvas height, width
+- [X] Add Events
 - [ ] Add more Examples
   - [ ] Add ready to use MudBlazor component
   - [ ] Add ready to use html component
