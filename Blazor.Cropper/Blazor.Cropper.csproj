@@ -17,8 +17,9 @@
         <RepositoryType>Git</RepositoryType>
         <AssemblyName>Json_exe.Blazor.Cropper</AssemblyName>
         <RootNamespace>Json_exe.Blazor.Cropper</RootNamespace>
-        <TargetFrameworks>net7.0;net8.0</TargetFrameworks>
         <PackageIcon>Json_exe.Blazor.Cropper-Logo.png</PackageIcon>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <TargetFramework>net8.0</TargetFramework>
     </PropertyGroup>
 
 
@@ -27,7 +28,7 @@
     </ItemGroup>
     
     <ItemGroup>
-        <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="7.0.14"/>
+        <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.17" />
     </ItemGroup>
 
     <ItemGroup>

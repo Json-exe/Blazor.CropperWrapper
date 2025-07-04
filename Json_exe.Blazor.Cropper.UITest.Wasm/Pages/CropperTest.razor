@@ -11,8 +11,9 @@
 
 <div class="vstack my-3">
     <label>Here are some preview containers!</label>
-    <div style="width: 250px; height: 150px; float: left; overflow: hidden; margin-right: 0.5rem; margin-bottom: 0.5rem;" 
-         class="img-preview"></div>
+    <div
+        style="width: 250px; height: 150px; float: left; overflow: hidden; margin-right: 0.5rem; margin-bottom: 0.5rem;"
+        class="img-preview"></div>
 </div>
 
 <CropperWrapper @ref="@CropperWrapperRef" OnReady="OnReady" OnZoom="OnZoom" OnCrop="OnCrop"
@@ -21,7 +22,8 @@
 <div class="hstack my-3 gap-3 flex-wrap justify-content-center align-items-center">
     <button class="btn-primary w-25 mt-2" @onclick="@(() => CropperWrapperRef.RotateLeft())">Rotate Left</button>
     <button class="btn-primary w-25 mt-2" @onclick="@(() => CropperWrapperRef.RotateRight())">Rotate Right</button>
-    <button class="btn-primary w-25 mt-2" @onclick="@(() => CropperWrapperRef.ScaleHorizontal())">Flip Horizontal</button>
+    <button class="btn-primary w-25 mt-2" @onclick="@(() => CropperWrapperRef.ScaleHorizontal())">Flip Horizontal
+    </button>
     <button class="btn-primary w-25 mt-2" @onclick="@(() => CropperWrapperRef.ScaleVertical())">Flip Vertical</button>
     <button class="btn-primary w-25 mt-2" @onclick="@(GoBack)">Go back</button>
     <button class="btn-primary w-25 mt-2" @onclick="@(Crop)">Crop</button>
@@ -43,7 +45,7 @@
         Preview = ".img-preview"
     };
 
-    private readonly List<string> _changes = new();
+    private readonly List<string> _changes = [];
     private string _imageSrc = "./sample-data/testImage.jpg";
 
     private void OnReady()
@@ -59,7 +61,12 @@
             ImageSmoothingEnabled = true,
             ImageSmoothingQuality = ImageSmoothingQuality.medium
         });
-        // _imageSrc = data;
+        var client = new HttpClient();
+        var response = await client.GetAsync(data);
+        if (response.IsSuccessStatusCode)
+        {
+            _imageSrc = data.ToString();
+        }
     }
 
     private async Task GetData()
@@ -67,7 +74,7 @@
         var data = await CropperWrapperRef.GetData(true);
         Console.WriteLine(data);
     }
-    
+
     private async Task GoBack()
     {
         if (_changes.Count > 0)

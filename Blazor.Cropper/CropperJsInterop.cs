@@ -33,21 +33,33 @@ public class CropperJsInterop : IAsyncDisposable
         _cropModule =
             await module.InvokeAsync<IJSObjectReference>("initializeCropper", reference, o, _dotNetObjectReference);
     }
-    
+
     [JSInvokable]
     public async Task ReadyEvent() => await _cropperWrapper.OnReady.InvokeAsync();
-    
+
     [JSInvokable]
     public async Task ZoomEvent(ZoomEvent zoomEvent) => await _cropperWrapper.OnZoom.InvokeAsync(zoomEvent);
 
     [JSInvokable]
     public async Task CropEvent(CropEvent cropEvent) => await _cropperWrapper.OnCrop.InvokeAsync(cropEvent);
-    
-    public async ValueTask<string> GetCroppedCanvas(CropCanvasOptions options)
+
+    public async ValueTask<string> GetCroppedCanvasAsBase64(CropCanvasOptions options)
     {
         var module = await _moduleTask.Value;
         var imageData = await module.InvokeAsync<string>("getCroppedCanvas", options, _cropModule);
         return imageData;
+    }
+
+    public async ValueTask<Uri> GetCroppedCanvasAsUri(CropCanvasOptions options)
+    {
+        var module = await _moduleTask.Value;
+        var uri = await module.InvokeAsync<Uri?>("getCroppedCanvasUri", options, _cropModule);
+        if (uri is null)
+        {
+            throw new CropperException("Failed to get cropped canvas uri", null);
+        }
+
+        return uri;
     }
 
     public async ValueTask RotateLeft(int degrees = -45)
@@ -129,12 +141,27 @@ public class CropperJsInterop : IAsyncDisposable
         var data = await module.InvokeAsync<CropData>("getData", rounded, _cropModule);
         return data;
     }
-    
+
+    public async ValueTask DestroyBlobs()
+    {
+        var module = await _moduleTask.Value;
+        await module.InvokeVoidAsync("destroyBlobs");
+    }
+
     public async ValueTask DisposeAsync()
     {
         if (_moduleTask.IsValueCreated)
         {
             var module = await _moduleTask.Value;
+            try
+            {
+                await module.InvokeVoidAsync("dispose");
+            }
+            catch (JSDisconnectedException)
+            {
+                // Ignore
+            }
+
             await module.DisposeAsync();
             _dotNetObjectReference?.Dispose();
         }

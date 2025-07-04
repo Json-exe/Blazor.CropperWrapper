@@ -1,4 +1,5 @@
 ﻿import './vendors/cropper.js'
+const blobs = [];
 
 export function initializeCropper(element, options, dotnetObjectReference) {
     loadStyles();
@@ -57,10 +58,39 @@ export function scaleHorizontally(cropperReference) {
 export function getCroppedCanvas(options, cropperReference) {
     console.log(options);
     const canvas = cropperReference.getCroppedCanvas(options);
-    cropperReference.getCroppedCanvas({ fillColor: '' })
+    cropperReference.getCroppedCanvas({fillColor: ''})
     const data = canvas.toDataURL("image/jpeg");
     cropperReference.replace(data);
     return canvas.toDataURL("image/jpeg");
+}
+
+export async function getCroppedCanvasUri(options, cropperReference, callback) {
+    console.log(options);
+    const canvas = cropperReference.getCroppedCanvas(options);
+    cropperReference.getCroppedCanvas({fillColor: ''})
+    const data = canvas.toDataURL("image/jpeg");
+    cropperReference.replace(data);
+    try {
+        const objectUrl = await toBlobWrapper(canvas);
+        blobs.push(objectUrl);
+        return objectUrl;
+    } catch (e) {
+        console.error("There was an error creating a blob from the canvas!", e);
+        return null;
+    }
+}
+
+function toBlobWrapper(canvas) {
+    return new Promise((resolve, reject) => {
+        canvas.toBlob(blob => {
+            if (!blob) {
+                reject("Blob could not be created!");
+                return;
+            }
+            const uri = URL.createObjectURL(blob);
+            resolve(uri);
+        }, 'image/jpeg')
+    });
 }
 
 export function replace(data, cropperReference) {
@@ -88,4 +118,14 @@ function loadStyles() {
     link.rel = 'stylesheet';
     link.href = './_content/Json_exe.Blazor.Cropper/vendors/cropper.css';
     document.head.appendChild(link);
+}
+
+export function destroyBlobs() {
+    for (const blob of blobs) {
+        URL.revokeObjectURL(blob);
+    }
+}
+
+export function dispose() {
+    destroyBlobs()
 }

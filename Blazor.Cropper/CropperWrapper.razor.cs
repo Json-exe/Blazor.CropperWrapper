@@ -1,10 +1,9 @@
 ﻿using Json_exe.Blazor.Cropper.Model;
 using Microsoft.AspNetCore.Components;
-using Microsoft.JSInterop;
 
 namespace Json_exe.Blazor.Cropper;
 
-public partial class CropperWrapper
+public partial class CropperWrapper : IAsyncDisposable
 {
     /// <summary>
     /// The image src to crop.
@@ -30,17 +29,19 @@ public partial class CropperWrapper
     /// </summary>
     [Parameter]
     public EventCallback OnReady { get; set; }
+
     /// <summary>
     /// This event fires when a cropper instance starts to zoom in or zoom out its canvas (image wrapper).
     /// </summary>
     [Parameter]
     public EventCallback<ZoomEvent> OnZoom { get; set; }
+
     /// <summary>
     /// This event fires when the canvas (image wrapper) or the crop box changes.
     /// </summary>
     [Parameter]
     public EventCallback<CropEvent> OnCrop { get; set; }
-    
+
     private ElementReference ElementRef { get; set; }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -61,21 +62,35 @@ public partial class CropperWrapper
     /// <returns>
     /// The cropped image as a base64 string.
     /// </returns>
-    public async Task<string> GetCroppedArea(CropCanvasOptions options)
+    public async Task<string> GetCroppedAreaBase64(CropCanvasOptions options)
     {
-        var imageData = await CropperJsInterop.GetCroppedCanvas(options);
+        var imageData = await CropperJsInterop.GetCroppedCanvasAsBase64(options);
         return imageData;
     }
-    
+
+    /// <summary>
+    /// Returns the cropped area of the image as a blob uri with the given options.
+    /// </summary>
+    /// <param name="options">
+    /// The options for the cropped area.
+    /// </param>
+    /// <returns>
+    /// The cropped image as a blob uri.
+    /// </returns>
+    public async Task<Uri> GetCroppedAreaBlobUri(CropCanvasOptions options)
+    {
+        return await CropperJsInterop.GetCroppedCanvasAsUri(options);
+    }
+
     /// <summary>
     /// Returns the cropped area of the image as a base64 string with default options.
     /// </summary>
     /// <returns>
     /// The cropped image as a base64 string.
     /// </returns>
-    public async Task<string> GetCroppedArea()
+    public async Task<string> GetCroppedAreaBase64()
     {
-        var imageData = await CropperJsInterop.GetCroppedCanvas(new CropCanvasOptions());
+        var imageData = await CropperJsInterop.GetCroppedCanvasAsBase64(new CropCanvasOptions());
         return imageData;
     }
 
@@ -209,7 +224,7 @@ public partial class CropperWrapper
     {
         await CropperJsInterop.RotateTo(degree);
     }
-    
+
     /// <summary>
     /// Output the final cropped area position and size data (based on the natural size of the original image).
     /// </summary>
@@ -222,5 +237,21 @@ public partial class CropperWrapper
     public async Task<CropData> GetData(bool rounded = false)
     {
         return await CropperJsInterop.GetData(rounded);
+    }
+
+    /// <summary>
+    /// Revokes all created objectURLs that have been created by <see cref="GetCroppedAreaBlobUri"/>.
+    /// </summary>
+    /// <remarks>
+    /// This will also be called on dispose of the cropper wrapper.
+    /// </remarks>
+    public async Task DestroyBlobs()
+    {
+        await CropperJsInterop.DestroyBlobs();
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (CropperJsInterop != null) await CropperJsInterop.DisposeAsync();
     }
 }
