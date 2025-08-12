@@ -44,7 +44,7 @@ To start using Json_exe.Blazor.CropperWrapper:
 <CropperWrapper Options="new CropperOptions { AspectRatio = 1, ViewMode = 1 }" ImageSrc="@ImageData" @ref="@CropperRef" Alt="Example-Alt"/>
 <MudDivider FlexItem Class="my-2"/>
 <MudStack Row Spacing="5">
-    <MudButton Variant="Variant.Filled" OnClick="@(() => CropperRef.GetCroppedArea())">Crop!</MudButton>
+    <MudButton Variant="Variant.Filled" OnClick="@(() => CropperRef.GetCroppedAreaBlobUri())">Crop!</MudButton>
 </MudStack>
 ```
 In this example the Button calls the Method CropperRef.GetCroppedArea() which crops the image inside the Cropper Canva and replaces it witht the cropped version.
@@ -72,8 +72,8 @@ In this example the Button calls the Method CropperRef.GetCroppedArea() which cr
   private async Task Crop()
   {
     _changes.Add(_imageSrc);
-    var data = await CropperWrapperRef.GetCroppedArea();
-    _imageSrc = data;
+    var data = await CropperWrapperRef.GetCroppedAreaBlobUri();
+    _imageSrc = data.ToString();
   }
 }
 ```
@@ -232,7 +232,7 @@ The following events are available to use atm. To read more about them consider 
 - **OnCrop**:
   - This event fires when the canvas (image wrapper) or the crop box changes.
 
-## Important
+## Important (When using the Base64 Method GetCroppedAreaBase64()) - Its recommended to use the BlobUri method to avoid this.
 Because Cropper returns an base64 string of the cropped image, the data can get very large for the SignalR connection.
 To prevent this, you can increase the max size of the SignalR connection in your Startup.cs.
 ```CSharp
