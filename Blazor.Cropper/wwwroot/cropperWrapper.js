@@ -1,4 +1,4 @@
-﻿import './vendors/cropper.js'
+﻿import './vendors/cropper.min.js'
 const blobs = [];
 
 export function initializeCropper(element, options, dotnetObjectReference) {

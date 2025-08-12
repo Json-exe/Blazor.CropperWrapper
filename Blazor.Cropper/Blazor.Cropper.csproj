@@ -32,7 +32,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Content Update="wwwroot\vendors\cropper.js">
+        <Content Update="wwwroot\vendors\cropper.min.js">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
         <Content Update="wwwroot\cropperWrapper.js">
