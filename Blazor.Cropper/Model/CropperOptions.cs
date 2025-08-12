@@ -2,6 +2,9 @@
 
 namespace Json_exe.Blazor.Cropper.Model;
 
+/// <summary>
+/// Represents the configuration options for a cropper instance. Read more at https://github.com/fengyuanchen/cropperjs/blob/v1/README.md#options
+/// </summary>
 public class CropperOptions
 {
     [JsonPropertyName("viewMode")] public int ViewMode { get; set; } = 0;
@@ -42,14 +45,22 @@ public class CropperOptions
 
     [JsonPropertyName("toggleDragModeOnDblclick")]
     public bool ToggleDragModeOnDblclick { get; set; } = true;
-    [JsonPropertyName("minContainerWidth")] public double MinContainerWidth { get; set; } = 200;
-    [JsonPropertyName("minContainerHeight")] public double MinContainerHeight { get; set; } = 100;
+
+    [JsonPropertyName("minContainerWidth")]
+    public double MinContainerWidth { get; set; } = 200;
+
+    [JsonPropertyName("minContainerHeight")]
+    public double MinContainerHeight { get; set; } = 100;
+
     [JsonPropertyName("minCanvasWidth")] public double MinCanvasWidth { get; set; } = 0;
     [JsonPropertyName("minCanvasHeight")] public double MinCanvasHeight { get; set; } = 0;
     [JsonPropertyName("minCropBoxWidth")] public double MinCropBoxWidth { get; set; } = 0;
     [JsonPropertyName("minCropBoxHeight")] public double MinCropBoxHeight { get; set; } = 0;
 }
 
+/// <summary>
+/// Specifies the drag mode for a cropper instance, determining how the crop box or canvas can be manipulated by user interactions.
+/// </summary>
 public enum DragMode
 {
     crop,

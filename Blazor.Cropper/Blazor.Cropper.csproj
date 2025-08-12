@@ -19,7 +19,7 @@
         <RootNamespace>Json_exe.Blazor.Cropper</RootNamespace>
         <PackageIcon>Json_exe.Blazor.Cropper-Logo.png</PackageIcon>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
-        <TargetFramework>net8.0</TargetFramework>
+        <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
     </PropertyGroup>
 
 

@@ -44,6 +44,7 @@ public partial class CropperWrapper : IAsyncDisposable
 
     private ElementReference ElementRef { get; set; }
 
+    /// <inheritdoc />
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
@@ -250,6 +251,7 @@ public partial class CropperWrapper : IAsyncDisposable
         await CropperJsInterop.DestroyBlobs();
     }
 
+    /// <inheritdoc />
     public async ValueTask DisposeAsync()
     {
         if (CropperJsInterop != null) await CropperJsInterop.DisposeAsync();

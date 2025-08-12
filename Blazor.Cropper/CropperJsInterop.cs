@@ -11,7 +11,7 @@ namespace Json_exe.Blazor.Cropper;
 // This class can be registered as scoped DI service and then injected into Blazor
 // components for use.
 
-public class CropperJsInterop : IAsyncDisposable
+internal sealed class CropperJsInterop : IAsyncDisposable
 {
     private readonly Lazy<Task<IJSObjectReference>> _moduleTask;
     private IJSObjectReference _cropModule = null!;
