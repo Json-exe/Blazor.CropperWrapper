@@ -19,7 +19,7 @@
         <RootNamespace>Json_exe.Blazor.Cropper</RootNamespace>
         <PackageIcon>Json_exe.Blazor.Cropper-Logo.png</PackageIcon>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
-        <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
+        <TargetFrameworks>net9.0;net10.0</TargetFrameworks>
     </PropertyGroup>
 
 
@@ -27,8 +27,12 @@
         <SupportedPlatform Include="browser"/>
     </ItemGroup>
     
-    <ItemGroup>
-        <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.17" />
+    <ItemGroup Condition="'$(TargetFramework)' == 'net9.0'">
+        <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="9.0.16" />
+    </ItemGroup>
+
+    <ItemGroup Condition="'$(TargetFramework)' == 'net10.0'">
+        <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="10.0.8" />
     </ItemGroup>
 
     <ItemGroup>
