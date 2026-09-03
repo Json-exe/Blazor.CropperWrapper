@@ -44,12 +44,14 @@ public partial class CropperWrapper : IAsyncDisposable
 
     private ElementReference ElementRef { get; set; }
 
+    [Inject] private CropperJsInterop Interop { get; init; } = null!;
+
     /// <inheritdoc />
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
-            await CropperJsInterop.InitializeCropper(ElementRef, Options,
+            await Interop.InitializeCropper(ElementRef, Options,
                 this);
         }
     }
@@ -65,7 +67,7 @@ public partial class CropperWrapper : IAsyncDisposable
     /// </returns>
     public async Task<string> GetCroppedAreaBase64(CropCanvasOptions options)
     {
-        var imageData = await CropperJsInterop.GetCroppedCanvasAsBase64(options);
+        var imageData = await Interop.GetCroppedCanvasAsBase64(options);
         return imageData;
     }
 
@@ -80,7 +82,7 @@ public partial class CropperWrapper : IAsyncDisposable
     /// </returns>
     public async Task<Uri> GetCroppedAreaBlobUri(CropCanvasOptions options)
     {
-        return await CropperJsInterop.GetCroppedCanvasAsUri(options);
+        return await Interop.GetCroppedCanvasAsUri(options);
     }
 
     /// <summary>
@@ -91,7 +93,7 @@ public partial class CropperWrapper : IAsyncDisposable
     /// </returns>
     public async Task<string> GetCroppedAreaBase64()
     {
-        var imageData = await CropperJsInterop.GetCroppedCanvasAsBase64(new CropCanvasOptions());
+        var imageData = await Interop.GetCroppedCanvasAsBase64(new CropCanvasOptions());
         return imageData;
     }
 
@@ -115,7 +117,7 @@ public partial class CropperWrapper : IAsyncDisposable
     public async Task RotateLeft(int degree = 45)
     {
         degree = -degree;
-        await CropperJsInterop.RotateLeft(degree);
+        await Interop.RotateLeft(degree);
     }
 
     /// <summary>
@@ -126,7 +128,7 @@ public partial class CropperWrapper : IAsyncDisposable
     /// </param>
     public async Task RotateRight(int degree = 45)
     {
-        await CropperJsInterop.RotateRight(degree);
+        await Interop.RotateRight(degree);
     }
 
     /// <summary>
@@ -134,7 +136,7 @@ public partial class CropperWrapper : IAsyncDisposable
     /// </summary>
     public async Task ScaleVertical()
     {
-        await CropperJsInterop.ScaleVertical();
+        await Interop.ScaleVertical();
     }
 
     /// <summary>
@@ -142,7 +144,7 @@ public partial class CropperWrapper : IAsyncDisposable
     /// </summary>
     public async Task ScaleHorizontal()
     {
-        await CropperJsInterop.ScaleHorizontal();
+        await Interop.ScaleHorizontal();
     }
 
     /// <summary>
@@ -156,7 +158,7 @@ public partial class CropperWrapper : IAsyncDisposable
     /// </param>
     public async Task Move(int x, int y)
     {
-        await CropperJsInterop.Move(x, y);
+        await Interop.Move(x, y);
     }
 
     /// <summary>
@@ -164,7 +166,7 @@ public partial class CropperWrapper : IAsyncDisposable
     /// </summary>
     public async Task Reset()
     {
-        await CropperJsInterop.Reset();
+        await Interop.Reset();
     }
 
     /// <summary>
@@ -172,7 +174,7 @@ public partial class CropperWrapper : IAsyncDisposable
     /// </summary>
     public async Task Clear()
     {
-        await CropperJsInterop.Clear();
+        await Interop.Clear();
     }
 
     /// <summary>
@@ -183,7 +185,7 @@ public partial class CropperWrapper : IAsyncDisposable
     /// </param>
     public async Task Replace(string data)
     {
-        await CropperJsInterop.Replace(data);
+        await Interop.Replace(data);
     }
 
     /// <summary>
@@ -191,7 +193,7 @@ public partial class CropperWrapper : IAsyncDisposable
     /// </summary>
     public async Task Enable()
     {
-        await CropperJsInterop.Enable();
+        await Interop.Enable();
     }
 
     /// <summary>
@@ -199,7 +201,7 @@ public partial class CropperWrapper : IAsyncDisposable
     /// </summary>
     public async Task Disable()
     {
-        await CropperJsInterop.Disable();
+        await Interop.Disable();
     }
 
     /// <summary>
@@ -212,7 +214,7 @@ public partial class CropperWrapper : IAsyncDisposable
     /// </param>
     public async Task Zoom(double ratio)
     {
-        await CropperJsInterop.Zoom(ratio);
+        await Interop.Zoom(ratio);
     }
 
     /// <summary>
@@ -223,7 +225,7 @@ public partial class CropperWrapper : IAsyncDisposable
     /// </param>
     public async Task RotateTo(double degree)
     {
-        await CropperJsInterop.RotateTo(degree);
+        await Interop.RotateTo(degree);
     }
 
     /// <summary>
@@ -237,7 +239,7 @@ public partial class CropperWrapper : IAsyncDisposable
     /// </returns>
     public async Task<CropData> GetData(bool rounded = false)
     {
-        return await CropperJsInterop.GetData(rounded);
+        return await Interop.GetData(rounded);
     }
 
     /// <summary>
@@ -248,12 +250,12 @@ public partial class CropperWrapper : IAsyncDisposable
     /// </remarks>
     public async Task DestroyBlobs()
     {
-        await CropperJsInterop.DestroyBlobs();
+        await Interop.DestroyBlobs();
     }
 
     /// <inheritdoc />
     public async ValueTask DisposeAsync()
     {
-        if (CropperJsInterop != null) await CropperJsInterop.DisposeAsync();
+        await Interop.DisposeAsync();
     }
 }
