@@ -17,14 +17,14 @@ internal sealed class CropperJsInterop : IAsyncDisposable
             "import", "./_content/Json_exe.Blazor.Cropper/cropperWrapper.js"));
     }
 
-    public async ValueTask InitializeCropper(ElementReference reference, object o,
+    public async ValueTask InitializeCropper(ElementReference reference, CropperOptions options,
         CropperWrapper dotNetObjectReference)
     {
         var module = await _moduleTask.Value;
         _dotNetObjectReference = DotNetObjectReference.Create(this);
         _cropperWrapper = dotNetObjectReference;
-        _cropModule =
-            await module.InvokeAsync<IJSObjectReference>("initializeCropper", reference, o, _dotNetObjectReference);
+        _cropModule = await module.InvokeAsync<IJSObjectReference>("initializeCropper", reference, options,
+            _dotNetObjectReference);
     }
 
     [JSInvokable]

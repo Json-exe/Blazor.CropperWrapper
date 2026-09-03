@@ -109,7 +109,7 @@ export function zoom(value, cropperReference) {
     cropperReference.zoom(value);
 }
 
-export function getData(rounded = false, cropperReference) {
+export function getData(rounded, cropperReference) {
     return cropperReference.getData(rounded);
 }
 
