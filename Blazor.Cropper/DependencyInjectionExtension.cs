@@ -14,7 +14,7 @@ public static class DependencyInjectionExtension
     /// <returns>The IServiceCollection instance for chaining further configuration.</returns>
     public static IServiceCollection AddCropper(this IServiceCollection services)
     {
-        services.AddScoped<CropperJsInterop>();
+        services.AddTransient<CropperJsInterop>();
         return services;
     }
 }

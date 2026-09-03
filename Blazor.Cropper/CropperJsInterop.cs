@@ -4,24 +4,17 @@ using Microsoft.JSInterop;
 
 namespace Json_exe.Blazor.Cropper;
 
-// This class provides an example of how JavaScript functionality can be wrapped
-// in a .NET class for easy consumption. The associated JavaScript module is
-// loaded on demand when first needed.
-//
-// This class can be registered as scoped DI service and then injected into Blazor
-// components for use.
-
 internal sealed class CropperJsInterop : IAsyncDisposable
 {
-    private readonly Lazy<Task<IJSObjectReference>> _moduleTask;
+    private readonly Lazy<ValueTask<IJSObjectReference>> _moduleTask;
     private IJSObjectReference _cropModule = null!;
     private DotNetObjectReference<CropperJsInterop>? _dotNetObjectReference;
     private CropperWrapper _cropperWrapper = null!;
 
     public CropperJsInterop(IJSRuntime jsRuntime)
     {
-        _moduleTask = new Lazy<Task<IJSObjectReference>>(() => jsRuntime.InvokeAsync<IJSObjectReference>(
-            "import", "./_content/Json_exe.Blazor.Cropper/cropperWrapper.js").AsTask());
+        _moduleTask = new Lazy<ValueTask<IJSObjectReference>>(() => jsRuntime.InvokeAsync<IJSObjectReference>(
+            "import", "./_content/Json_exe.Blazor.Cropper/cropperWrapper.js"));
     }
 
     public async ValueTask InitializeCropper(ElementReference reference, object o,
