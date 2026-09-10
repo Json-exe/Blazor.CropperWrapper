@@ -42,6 +42,18 @@ public partial class CropperWrapper : IAsyncDisposable
     [Parameter]
     public EventCallback<CropEvent> OnCrop { get; set; }
 
+    /// <summary>
+    /// Sets additional classes for the image container.
+    /// </summary>
+    [Parameter]
+    public string Class { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Sets additional styles for the image container.
+    /// </summary>
+    [Parameter]
+    public string Style { get; set; } = string.Empty;
+
     private ElementReference ElementRef { get; set; }
 
     [Inject] private CropperJsInterop Interop { get; init; } = null!;
