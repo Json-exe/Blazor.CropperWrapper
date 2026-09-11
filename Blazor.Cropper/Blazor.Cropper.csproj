@@ -36,8 +36,9 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Content Update="wwwroot\vendors\cropper.min.js">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        <Content Update="wwwroot\cropperWrapper.ts">
+            <Pack>false</Pack>
+            <CopyToOutputDirectory>Never</CopyToOutputDirectory>
         </Content>
         <Content Update="wwwroot\cropperWrapper.js">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -45,6 +46,10 @@
         <None Include="../readme.md" Pack="true" PackagePath="\"/>
         <None Include="../LICENSE" Pack="true" PackagePath="\"/>
         <None Include="../Json_exe.Blazor.Cropper-Logo.png" PackagePath="\" Pack="true"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <TypeScriptCompile Include="wwwroot\cropperWrapper.ts" Pack="false" />
     </ItemGroup>
 
 </Project>

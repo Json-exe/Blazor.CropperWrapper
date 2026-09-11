@@ -1,5 +1,6 @@
 ﻿using Json_exe.Blazor.Cropper.Model;
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 
 namespace Json_exe.Blazor.Cropper;
 
@@ -63,8 +64,7 @@ public partial class CropperWrapper : IAsyncDisposable
     {
         if (firstRender)
         {
-            await Interop.InitializeCropper(ElementRef, Options,
-                this);
+            await Interop.InitializeCropper(ElementRef, Options, this);
         }
     }
 
@@ -79,8 +79,7 @@ public partial class CropperWrapper : IAsyncDisposable
     /// </returns>
     public async Task<string> GetCroppedAreaBase64(CropCanvasOptions options)
     {
-        var imageData = await Interop.GetCroppedCanvasAsBase64(options);
-        return imageData;
+        return await Interop.GetCroppedCanvasAsBase64(options);
     }
 
     /// <summary>
@@ -95,6 +94,11 @@ public partial class CropperWrapper : IAsyncDisposable
     public async Task<Uri> GetCroppedAreaBlobUri(CropCanvasOptions options)
     {
         return await Interop.GetCroppedCanvasAsUri(options);
+    }
+
+    public async Task<IJSStreamReference> GetCroppedAreaStream(CropCanvasOptions options)
+    {
+        return await Interop.GetCroppedCanvasAsStream(options);
     }
 
     /// <summary>

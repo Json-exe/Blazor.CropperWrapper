@@ -56,17 +56,19 @@
     private async Task Crop()
     {
         _changes.Add(_imageSrc);
-        var data = await CropperWrapperRef.GetCroppedAreaBlobUri(new CropCanvasOptions
+        var data = await CropperWrapperRef.GetCroppedAreaStream(new CropCanvasOptions
         {
             ImageSmoothingEnabled = true,
             ImageSmoothingQuality = ImageSmoothingQuality.medium
         });
-        var client = new HttpClient();
-        var response = await client.GetAsync(data);
-        if (response.IsSuccessStatusCode)
-        {
-            _imageSrc = data.ToString();
-        }
+        var stream = await data.OpenReadStreamAsync(10_000_000);
+
+        var buffer = new byte[stream.Length];
+        await stream.ReadExactlyAsync(buffer);
+        var base64 = Convert.ToBase64String(buffer);
+
+        _imageSrc = "data:image/jpeg;base64," + base64;
+        await CropperWrapperRef.Replace(_imageSrc);
     }
 
     private async Task GetData()

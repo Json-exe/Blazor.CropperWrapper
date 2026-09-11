@@ -1,0 +1,18 @@
+{
+  "name": "Blazor.Cropper",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "esbuild wwwroot/cropperWrapper.ts --bundle --format=esm --platform=browser --target=es2015 --minify --outfile=wwwroot/cropperWrapper.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cropperjs": "1.6.3"
+  },
+  "devDependencies": {
+    "esbuild": "^0.28.2"
+  }
+}

@@ -39,20 +39,21 @@ internal sealed class CropperJsInterop : IAsyncDisposable
     public async ValueTask<string> GetCroppedCanvasAsBase64(CropCanvasOptions options)
     {
         var module = await _moduleTask.Value;
-        var imageData = await module.InvokeAsync<string>("getCroppedCanvas", options, _cropModule);
-        return imageData;
+        return await module.InvokeAsync<string>("getCroppedCanvas", options, _cropModule);
     }
 
     public async ValueTask<Uri> GetCroppedCanvasAsUri(CropCanvasOptions options)
     {
         var module = await _moduleTask.Value;
         var uri = await module.InvokeAsync<Uri?>("getCroppedCanvasUri", options, _cropModule);
-        if (uri is null)
-        {
-            throw new CropperException("Failed to get cropped canvas uri", null);
-        }
+        return uri ?? throw new CropperException("Failed to get cropped canvas uri", null);
+    }
 
-        return uri;
+    public async ValueTask<IJSStreamReference> GetCroppedCanvasAsStream(CropCanvasOptions options)
+    {
+        var module = await _moduleTask.Value;
+        var stream = await module.InvokeAsync<IJSStreamReference?>("getCroppedCanvasStream", options, _cropModule);
+        return stream ?? throw new CropperException("Failed to get cropped canvas stream reference", null);
     }
 
     public async ValueTask RotateLeft(int degrees = -45)
