@@ -109,7 +109,16 @@ public sealed class CropCanvasOptions
 /// </summary>
 public enum ImageSmoothingQuality
 {
+    /// <summary>
+    /// Low smoothing quality.
+    /// </summary>
     low,
+    /// <summary>
+    /// Medium smoothing quality.
+    /// </summary>
     medium,
+    /// <summary>
+    /// High smoothing quality.
+    /// </summary>
     high
 }

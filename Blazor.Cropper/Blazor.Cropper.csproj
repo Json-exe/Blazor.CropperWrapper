@@ -4,11 +4,11 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <PackageId>Json_exe.Blazor.Cropper</PackageId>
-        <Version>0.4.0</Version>
+        <Version>0.6.0</Version>
         <Title>CropperJS Wrapper for Blazor</Title>
         <Authors>Json-exe</Authors>
         <Description>This is a wrapper around the CropperJS library.</Description>
-        <Copyright>Json-exe 2024</Copyright>
+        <Copyright>Json-exe 2026</Copyright>
         <PackageLicenseFile>LICENSE</PackageLicenseFile>
         <PackageReadmeFile>readme.md</PackageReadmeFile>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
@@ -26,20 +26,23 @@
     <ItemGroup>
         <SupportedPlatform Include="browser"/>
     </ItemGroup>
-    
+
     <ItemGroup Condition="'$(TargetFramework)' == 'net9.0'">
-        <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="9.0.17" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="9.0.17"/>
     </ItemGroup>
 
     <ItemGroup Condition="'$(TargetFramework)' == 'net10.0'">
-        <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="10.0.9" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="10.0.9"/>
     </ItemGroup>
 
     <ItemGroup>
-        <Content Update="wwwroot\cropperWrapper.ts">
-            <Pack>false</Pack>
+        <!-- cropperWrapper.ts is a build input only (esbuild -> cropperWrapper.js).
+             Static web assets ignore Content Pack="false", so remove it from Content
+             and keep it as None to exclude it from staticwebassets / NuGet. -->
+        <Content Remove="wwwroot\cropperWrapper.ts" />
+        <None Include="wwwroot\cropperWrapper.ts" Pack="false">
             <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-        </Content>
+        </None>
         <Content Update="wwwroot\cropperWrapper.js">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
@@ -49,7 +52,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <TypeScriptCompile Include="wwwroot\cropperWrapper.ts" Pack="false" />
+        <TypeScriptCompile Include="wwwroot\cropperWrapper.ts" />
     </ItemGroup>
 
 </Project>

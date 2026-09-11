@@ -12,7 +12,9 @@ Enhance your .NET Blazor applications with seamless image cropping functionality
   - [How to add a GoBack function](#how-to-add-a-goback-function)
 - [Usage](#usage)
   - [Interactive Methods](#interactive-methods)
+  - [Parameters](#parameters)
   - [Options](#options)
+  - [CropCanvasOptions](#cropcanvasoptions)
   - [Events](#events)
 - [Important](#important)
 - [Roadmap](#roadmap)
@@ -32,7 +34,7 @@ To start using Json_exe.Blazor.CropperWrapper:
 3. Add `builder.Services.AddCropper()` in your `Program.cs` or `Startup.cs`.
 4. Use `<CropperWrapper @ref="@CropperRef" ImageSrc="<Your-Image-Src>"/>` in any page.
 5. Create your user interface with buttons and other controls to interact with the cropper methods enabled by the Ref. ``CropperRef.Method()``
-6. Refer to [Usage and Features](#usage-and-features) for detailed information on methods and options.
+6. Refer to [Usage](#usage) for detailed information on methods and options.
 
 ## Preview
 
@@ -41,16 +43,28 @@ To start using Json_exe.Blazor.CropperWrapper:
 ## Examples 
 ### MudBlazor Application
 ```CSharp
+@using Json_exe.Blazor.Cropper.Model
 <CropperWrapper Options="new CropperOptions { AspectRatio = 1, ViewMode = 1 }" ImageSrc="@ImageData" @ref="@CropperRef" Alt="Example-Alt"/>
 <MudDivider FlexItem Class="my-2"/>
 <MudStack Row Spacing="5">
-    <MudButton Variant="Variant.Filled" OnClick="@(() => CropperRef.GetCroppedAreaBlobUri())">Crop!</MudButton>
+    <MudButton Variant="Variant.Filled" OnClick="@Crop">Crop!</MudButton>
 </MudStack>
+
+@code {
+    private CropperWrapper CropperRef { get; set; } = null!;
+
+    private async Task Crop()
+    {
+        await using var streamRef = await CropperRef.GetCroppedAreaStream(new CropCanvasOptions());
+        await using var stream = await streamRef.OpenReadStreamAsync(maxAllowedSize: 10_000_000);
+        // e.g. copy to MemoryStream, upload, or convert to base64
+    }
+}
 ```
-In this example the Button calls the Method CropperRef.GetCroppedArea() which crops the image inside the Cropper Canva and replaces it witht the cropped version.
 
 ### How to add a GoBack function
 ```CSharp
+@using Json_exe.Blazor.Cropper.Model
 <CropperWrapper @ref="@CropperWrapperRef" ImageSrc="@_imageSrc"/>
 
 @code 
@@ -82,8 +96,18 @@ In this example the Button calls the Method CropperRef.GetCroppedArea() which cr
 
 ### Interactive Methods
 The following methods are available to use atm.
-- **GetCroppedArea()**: 
-  - Crops the image with the selected Area and places the cropped image in the Canvas. The image before will be stored in a list to go back to that state.
+- **GetCroppedAreaBase64(CropCanvasOptions options)** / **GetCroppedAreaBase64()**:
+  - Returns the cropped area as a base64 data URL (`image/jpeg`).
+  - options: `CropCanvasOptions` (width, height, fill color, image smoothing, ...). The parameterless overload uses default options.
+- **GetCroppedAreaBlobUri(CropCanvasOptions options)**:
+  - Returns the cropped area as a blob `Uri` (object URL). Call `DestroyBlobs()` when the URIs are no longer needed; they are also revoked on dispose.
+  - options: `CropCanvasOptions` for the cropped canvas.
+- **GetCroppedAreaStream(CropCanvasOptions options)**:
+  - Returns the cropped area as an `IJSStreamReference` (JPEG blob). Preferred for large images because it avoids base64 SignalR limits and the extra blob-URI `HttpClient` roundtrip.
+  - options: `CropCanvasOptions` for the cropped canvas.
+  - Example: `await using var s = await CropperRef.GetCroppedAreaStream(new CropCanvasOptions()); await using var stream = await s.OpenReadStreamAsync(10_000_000);`
+- **DestroyBlobs()**:
+  - Revokes all object URLs created by `GetCroppedAreaBlobUri()`.
 - **GetImage()**:
   - Returns the Base64 string inside the ImageSrc Property. This represents the image currently shown inside the Crop Canvas.
 - **RotateLeft(int degree = 45)**:
@@ -114,12 +138,20 @@ The following methods are available to use atm.
 - **Zoom(double ratio)**:
   - Zooms the image inside the Canvas.
   - ratio: The amount of zoom you want to apply to the image.
-- **RotateTo(int degree)**:
+- **RotateTo(double degree)**:
   - Rotates the image to the given degree.
   - degree: The degree you want to rotate the image to.
 - **GetData(bool rounded = false)**:
   - Returns the data of the Cropper.
   - rounded (optional): If true, the data will be rounded.
+
+### Parameters
+- **ImageSrc** (required): The image src to crop.
+- **Alt**: Alt text for the image.
+- **Options**: A `CropperOptions` instance (see below).
+- **Class**: Additional CSS classes for the image container.
+- **Style**: Additional inline styles for the image container.
+- **OnReady / OnZoom / OnCrop**: Event callbacks (see Events).
 
 ### Options
 ---
@@ -128,8 +160,8 @@ The following options are available to use atm. To read more about them consider
   - Type: int
   - Default: 0
 - **DragMode**:
-  - Type: string
-  - Default: "crop"
+  - Type: DragMode enum (`crop`, `move`, `none`)
+  - Default: crop
 - **InitialAspectRatio**:
   - Type: double
   - Default: double.NaN
@@ -172,7 +204,7 @@ The following options are available to use atm. To read more about them consider
 - **AutoCropArea**:
   - Type: double
   - Default: 0.8
-- **Moveable**:
+- **Movable**:
   - Type: bool
   - Default: true
 - **Rotatable**:
@@ -221,6 +253,15 @@ The following options are available to use atm. To read more about them consider
   - Type: double
   - Default: 0
 
+### CropCanvasOptions
+---
+Options for `GetCroppedAreaBase64(options)`, `GetCroppedAreaBlobUri(options)` and `GetCroppedAreaStream(options)`. See the [Cropper.js getCroppedCanvas options](https://github.com/fengyuanchen/cropperjs/blob/v1/README.md#getcroppedcanvasoptions).
+- **Width / Height**: Destination size of the output canvas.
+- **MinWidth / MinHeight / MaxWidth / MaxHeight**: Size limits (defaults: 0 / Infinity).
+- **FillColor**: Fill for alpha values (default: `"transparent"`).
+- **ImageSmoothingEnabled** (default: true) / **ImageSmoothingQuality** (`low`, `medium`, `high`; default: `low`).
+- **Rounded** (default: false): Use rounded values.
+
 ### Events
 ---
 The following events are available to use atm. To read more about them consider using the official [Cropper.js documentation](https://github.com/fengyuanchen/cropperjs/blob/main/README.md#events)
@@ -232,9 +273,9 @@ The following events are available to use atm. To read more about them consider 
 - **OnCrop**:
   - This event fires when the canvas (image wrapper) or the crop box changes.
 
-## Important (When using the Base64 Method GetCroppedAreaBase64()) - Its recommended to use the BlobUri method to avoid this.
+## Important (When using the Base64 methods) - Its recommended to use the Stream method to avoid this.
 Because Cropper returns an base64 string of the cropped image, the data can get very large for the SignalR connection.
-To prevent this, you can increase the max size of the SignalR connection in your Startup.cs.
+To prevent this, either use `GetCroppedAreaStream(new CropCanvasOptions())` with `OpenReadStreamAsync()`, or increase the max size of the SignalR connection in your Startup.cs.
 ```CSharp
 services.AddSignalR(options =>
 {

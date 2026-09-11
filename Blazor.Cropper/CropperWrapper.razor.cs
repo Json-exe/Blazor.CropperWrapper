@@ -4,6 +4,9 @@ using Microsoft.JSInterop;
 
 namespace Json_exe.Blazor.Cropper;
 
+/// <summary>
+/// A Blazor wrapper component around Cropper.js for cropping images.
+/// </summary>
 public partial class CropperWrapper : IAsyncDisposable
 {
     /// <summary>
@@ -96,6 +99,15 @@ public partial class CropperWrapper : IAsyncDisposable
         return await Interop.GetCroppedCanvasAsUri(options);
     }
 
+    /// <summary>
+    /// Returns the cropped area of the image as a stream reference with the given options.
+    /// </summary>
+    /// <param name="options">
+    /// The options for the cropped area.
+    /// </param>
+    /// <returns>
+    /// A stream reference to the cropped image (JPEG blob).
+    /// </returns>
     public async Task<IJSStreamReference> GetCroppedAreaStream(CropCanvasOptions options)
     {
         return await Interop.GetCroppedCanvasAsStream(options);
