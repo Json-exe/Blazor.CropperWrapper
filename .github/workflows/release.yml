@@ -21,7 +21,6 @@ jobs:
         with:
           version: ^12.0.0
           runtime: node@22
-          cache: true
 
       - name: Install JS dependencies
         run: pnpm --dir Blazor.Cropper install --frozen-lockfile
